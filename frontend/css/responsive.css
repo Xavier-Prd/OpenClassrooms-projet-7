@@ -1,0 +1,42 @@
+.header {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.header__logo {
+    width: 50%;
+    height: 50%;
+}
+
+.header__slogan {
+    font-size: 16px;
+    margin: 0;
+    left: 20px;
+    top: -10px;
+}
+
+.main {
+    padding: 0 10px;
+}
+
+.main__title {
+font-size: 26px;
+}
+
+.main__title--underline::after {
+    height: 3px;
+}
+
+.connect__form {
+    width: 100%;
+}
+
+.connect__title {
+    font-size: 34px;
+}
+
+.connect__img {
+    display: none;
+}

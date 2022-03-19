@@ -7,6 +7,7 @@ exports.signup = (req, res, next) => {
     .then(hash => {
         const user = new User({
     email: req.body.email,
+    username: req.body.username,
     password: hash
         });     
         user.save()
@@ -17,7 +18,7 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    User.findOne({email: req.body.email})
+    User.findOne({ where: { email: req.body.email } })
     .then(user => {
         if(!user){
             return res.status(401).json({ message: "Utilisateur non trouvé !" });
@@ -28,9 +29,9 @@ exports.login = (req, res, next) => {
                 return res.status(401).json({ message: "Mot de passe invalide !" });
             }
             res.status(200).json({
-                userId: user._id,
+                userId: user.id,
                 token: jwt.sign(
-                  { userId: user._id },
+                  { userId: user.id },
                   'RANDOM_TOKEN_SECRET',
                   { expiresIn: '30d' }
                 )

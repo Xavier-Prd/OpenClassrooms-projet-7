@@ -1,30 +1,26 @@
 const {bdd} = require('../models/connexion.js');
 const {DataTypes} = require('sequelize');
 
-const User = bdd.define('User', {
+const Message = bdd.define('Message', {
     id : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    email : {
+    userId : {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    message : {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
-    },
-    username : {
-        type: DataTypes.STRING,
-        allowNull: false
-
-    },
-    password : {
-        type: DataTypes.STRING,
-        allowNull: false
     },
     imageUrl : {
-        type : DataTypes.STRING
+        type: DataTypes.STRING
+    },
+    date: {
+        type: DataTypes.TIME
     }
 });
 
-module.exports = User;
-
+module.exports = Message;

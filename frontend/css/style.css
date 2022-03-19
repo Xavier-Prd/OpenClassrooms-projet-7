@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400;700&display=swap');
+:root{
+    --main-color: #fd2d01;
+    --reduced-color: #FF6747;
+}
+*{
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: 400;
+    box-sizing: border-box;
+}
+
+.header{
+    margin-top: 5%;
+    margin-left: 200px;
+}
+
+.header__slogan{
+    font-size: 22px;
+    margin: 0 75px;
+    position: relative;
+    top: -20px;
+}
+
+.main {
+    padding: 0 275px;
+}
+
+.main__title {
+    font-size: 42px;
+}
+
+.main__title--underline {
+    position: relative;
+}
+
+.main__title--underline::after {
+    content:'';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    display: block;
+    background-color: var(--main-color);
+    height: 5px;
+    border-radius: 25px;
+    z-index: -1;
+}
+
+.main__connect {
+    display: flex;
+    justify-content: space-between;
+}
+
+.connect__img {
+margin-top: 85px;
+}
+
+.connect__form {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    justify-content: space-around;
+    width: 400px;
+}
+
+.connect__input {
+    height: 40px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.25);
+    border: none;
+    font-size: 16px;
+    padding: 10px 25px;
+}
+
+.connect__input:focus-visible, .connect__input:focus {
+    border: var(--main-color) 1px solid;
+    outline: none;
+}
+
+.connect__btn {
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 16px;
+    transition: 200ms ease-in-out;
+    margin-bottom: 15px;
+}
+
+.connect__btn:hover {
+    background-color: var(--reduced-color);
+    box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+.connect__title {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.connect__noaccount {
+    font-size: 22px;
+    margin: 0 25px;
+}
+
+.connect__inscription {
+    text-decoration: none;
+    color: var(--main-color);
+    transition: 200ms ease-in-out;
+}
+
+.connect__inscription:hover {
+color: var(--reduced-color);
+}
