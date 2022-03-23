@@ -2,7 +2,7 @@ const Message = require('../models/message');
 
 // Methode get - Envoyer tous les messages
 exports.get = (req, res, next) =>{
-    Message.findAll()
+    Message.findAll({order:  [['createdAt', 'DESC']]})
     .then(messages => {
         res.status(200).json(messages)
     })
@@ -19,16 +19,13 @@ exports.getOne = (req, res, next) => {
 
 // Methode add - Publier un message
 exports.add = (req, res, next) =>{
-    let imageUrl = null;
-    const messageObject = JSON.parse(req.body.message);
-    if(messageObject.imageUrl != null){
+    let imageUrl = '';
+    const messageObject = req.body.message;
+    if(messageObject.image != null){
         imageUrl = `${req.protocol}://${req.get('host')}/images/message-img/${req.file.filename}`;
     }
-    const message = {
-        ...messageObject,
-        imageUrl: imageUrl
-    };
-    Message.create(message)
+    messageObject.imageUrl = imageUrl;
+    Message.create(messageObject)
     .then(() => res.status(201).json({ message:'Message posté !'}))
     .catch(error => res.status(400).json({ error }));
 };

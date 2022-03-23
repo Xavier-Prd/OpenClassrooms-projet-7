@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" media="screen and (max-width: 1280px)" href="./css/tablet.css" />
+    <link rel="stylesheet" media="screen and (max-width: 460px)" href="./css/responsive.css" />
+    <title>Groupomania - Fil d'actualité</title>
+</head>
+<body>
+    <section id="chat">
+        <header class="user">
+            <section class="user__head header">
+            <img src="./images/logo.png" alt="logo groupomania xavier pardoue" class="header__logo">
+            <h2 class="header__slogan">Réseau social interne</h2>
+        </section>
+        <section class="user__container">
+            <article class="user__info">
+                <img :src="userImageUrl" alt="" class="user__img" alt="">
+                <p class="user__name">{{username}}</p>
+            </article>
+            <form @submit="sendData" enctype="multipart/form-data" class="user__form form">
+                <section class="user__textarea">
+                    <textarea cols="30" rows="10" class="form__input" v-model="messageToSend" maxlength="240" placeholder="Quelque chose à raconter ? Voici 240 caractères pour vous !"></textarea>
+                    <p class="form__remain">{{countChar(messageToSend)}} restants</p>
+                </section>
+                <section class="form__bottom">
+                    <label for="file"><img src="./images/upload.svg" alt="" class="form__upload"></label>
+                    <input type="file" id="file" @change="replaceImage" class="form__file">
+                    <input type="submit" :value="'Répondre à '+getUser(message.userId).username" class="form__submit">
+                </section>
+            </form>
+            </section>
+        </header>
+        <main class="main">
+            <section class="main__posts">
+                <article class="main__post post">
+                    <section class="post__head">
+                        <img :src="getUser(message.userId).imageUrl" alt="" class="post__img">
+                        <p class="post__time">{{conversionDate(message.createdAt)}}</p>
+                    </section>
+                    <section class="post__msg">
+                        <p class="post__author">{{getUser(message.userId).username}}</p>
+                        <p class="post__content">{{message.message}}</p>
+                        <img v-if="message.imageUrl" :src="message.imageUrl" alt="">
+                    </section>
+                    <a href="#" class="post__reply"><img src="./images/reply.svg" alt="">
+                    <p>{{comments.length}}</p>
+                    </a>
+                </article>
+                <article v-for="comment in comments" class="main__post main__post--comment post">
+                    <section class="post__head">
+                        <img :src="getUser(comment.userId).imageUrl" alt="" class="post__img">
+                        <p class="post__time">{{conversionDate(comment.createdAt)}}</p>
+                    </section>
+                    <section class="post__msg">
+                        <p class="post__author">{{getUser(comment.userId).username}}</p>
+                        <p class="post__content">{{comment.comment}}</p>
+                        <img v-if="comment.imageUrl" :src="comment.imageUrl" alt="">
+                    </section>
+                </article>
+            </section>
+        <p class="main__see">Il n'y a plus rien à voir...</p>
+    </main>
+</section>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="message.js"></script>
+</body>
+</html>

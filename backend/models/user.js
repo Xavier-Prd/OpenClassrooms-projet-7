@@ -21,6 +21,10 @@ const User = bdd.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    role : {
+        type: DataTypes.ENUM(['admin', 'user']),
+        allowNull: false
+    },
     imageUrl : {
         type : DataTypes.STRING
     }

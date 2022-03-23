@@ -15,22 +15,24 @@
         <img src="./images/logo.png" alt="logo groupomania xavier pardoue" class="header__logo">
         <h2 class="header__slogan">Réseau social interne</h2>
     </header>
-    <main class="main">
+    <main class="main" id="signup">
         <h1 class="main__title">Bienvenue sur le réseau social interne de <span class="main__title main__title--underline">Groupomania</span> !</h1>
         <section class="main__connect connect">
             <article class="connect__left">
                 <h2 class="connect__title">Inscrivez-vous</h2>
-                <form action="" class="connect__form">
-                    <input type="email" name="email"  id='email' class="connect__input" placeholder="Adresse mail">
-                    <input type="text" name="username" id="username" class="connect__input" placeholder="Username">
-                    <input type="password" name="password" id="password" class="connect__input" placeholder="Mot de passe">
-                    <input type="button" value="Inscription" class="connect__btn">
+                <p v-if="error">{{error}}</p>
+                <form @submit="sendData" class="connect__form">
+                    <input type="email" name="email"  v-model='email' class="connect__input" placeholder="Adresse mail">
+                    <input type="text" name="username" v-model="username" class="connect__input" placeholder="Username">
+                    <input type="password" name="password" v-model="password" class="connect__input" placeholder="Mot de passe">
+                    <input type="submit" value="Inscription" class="connect__btn">
                 </form>
                 <p class="connect__noaccount">Vous avez déjà un compte ? <a href="index.html" class="connect__inscription">Connectez-vous</a> !</p>
             </article>
             <img src="./images/illustr.svg" alt="" class="connect__img">
         </section>
     </main>
+    <script src="https://unpkg.com/vue@3"></script>
     <script src="signup.js"></script>
 
 </body>

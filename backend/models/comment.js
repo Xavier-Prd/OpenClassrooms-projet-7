@@ -1,7 +1,7 @@
 const {bdd} = require('../models/connexion.js');
 const {DataTypes} = require('sequelize');
 
-const Message = bdd.define('Message', {
+const Comment = bdd.define('Comment', {
     id : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -11,7 +11,11 @@ const Message = bdd.define('Message', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    message : {
+    messageId : {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    comment : {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -20,4 +24,4 @@ const Message = bdd.define('Message', {
     }
 });
 
-module.exports = Message;
+module.exports = Comment;
