@@ -30,7 +30,7 @@
                 <section class="form__bottom">
                     <label for="file"><img src="./images/upload.svg" alt="" class="form__upload"></label>
                     <input type="file" id="file" @change="replaceImage" class="form__file">
-                    <input type="submit" :value="'Répondre à '+getUser(message.userId).username" class="form__submit">
+                    <input type="submit" :value="Modifier" class="form__submit">
                 </section>
             </form>
             </section>
@@ -48,7 +48,6 @@
                         <img v-if="message.imageUrl" :src="message.imageUrl" alt="">
                     </section>
                     <a href="#" @click="deleteMsg" v-if="message.userId==this.user.userId||this.user.role=='admin'" class="post__delete"><img src="./images/trash.svg" class="post__trash"></a>
-                    <a v-if="message.userId==this.user.userId" :href="'edit.html?id='+message.id" class="post__edit"><img src='./images/edit.svg' class="post__edits"></a>
                     <a href="#" class="post__reply"><img src="./images/reply.svg" alt="">
                     <p>{{comments.length}}</p>
                     </a>
@@ -70,6 +69,6 @@
     </main>
 </section>
     <script src="https://unpkg.com/vue@3"></script>
-    <script src="message.js"></script>
+    <script src="edit.js"></script>
 </body>
 </html>

@@ -16,13 +16,14 @@ exports.get = (req, res, next) =>{
 // Methode add - Publier un commentaire
 exports.add = (req, res, next) =>{
     let imageUrl = '';
-    const commentObject = req.body.comment;
-    if(commentObject.image != null){
-        imageUrl = `${req.protocol}://${req.get('host')}/images/message-img/${req.file.filename}`;
+    const commentObject = JSON.parse(req.body.comment);
+    if(req.file){
+        imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     }
     commentObject.imageUrl = imageUrl;
+    commentObject.userId = req.token.userId;
     Comment.create(commentObject)
-    .then(() => res.status(201).json({ comment:'Commentaire posté !'}))
+    .then(() => res.status(201).json({ message:'Commentaire posté !'}))
     .catch(error => res.status(400).json({ error }));
 };
 

@@ -80,36 +80,6 @@ const app = Vue.createApp({
         replaceImage(e){
             this.image = e.currentTarget.files[0];
         },
-        disconnect(e){
-            localStorage.setItem('user', '');
-            window.location.assign('index.html');
-        },
-        deleteComment(comment) {
-            fetch('http://localhost:3000/api/auth/delete-comment/'+comment.id, {
-                method : 'DELETE',
-                headers: {
-                    authorization:'bearer '+ this.user.token
-                  }
-            })
-            .then((res)=> {
-                if(res.ok){
-                    return res.json();
-                }
-            })
-        },
-        deleteMsg(){
-            fetch('http://localhost:3000/api/auth/delete-message/'+this.message.id, {
-                method : 'DELETE',
-                headers: {
-                    authorization:'bearer '+ this.user.token
-                  }
-            })
-            .then((res)=> {
-                if(res.ok){
-                    return res.json();
-                }
-            })
-        },
         sendData(e){
             e.preventDefault();
             let valid = true;
@@ -119,10 +89,10 @@ const app = Vue.createApp({
             })
             if (valid) {
                 let data = new FormData();
-                data.append('comment', JSON.stringify({comment: this.messageToSend, messageId: this.message.id}));
+                data.append('message', JSON.stringify({message: this.messageToSend, messageId: this.message.id}));
                 data.append('image', this.image);
 
-                fetch('http://localhost:3000/api/auth/add-comment', {
+                fetch('http://localhost:3000/api/auth/modify-message/'+this.message.id, {
                     method : 'POST',
                     headers: {
                         authorization:'bearer '+ this.user.token
@@ -131,7 +101,7 @@ const app = Vue.createApp({
                 })
                 .then((res)=> {
                     if(res.ok){
-                        window.location.reload();
+                        window.location.assign('post.html?id='+this.message.id);
                         return res.json();
                     }
                 });
@@ -158,11 +128,10 @@ const app = Vue.createApp({
             }
           }).then(message => {
             this.getUsers(message.userId);
-                  
             this.message = message;
+            this.image = message.image;
+            this.messageToSend = message.message;
         });
 
     },
 }).mount('#chat');
-
-// e.target.files

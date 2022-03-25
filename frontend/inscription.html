@@ -20,10 +20,10 @@
         <section class="main__connect connect">
             <article class="connect__left">
                 <h2 class="connect__title">Inscrivez-vous</h2>
-                <p v-if="error">{{error}}</p>
+                <p v-if="error" class="connect__error">{{error.message}}</p>
                 <form @submit="sendData" class="connect__form">
-                    <input type="email" name="email"  v-model='email' class="connect__input" placeholder="Adresse mail">
-                    <input type="text" name="username" v-model="username" class="connect__input" placeholder="Username">
+                    <input type="email" name="email" v-bind:class="{error:mailError}"  v-model='email' class="connect__input" placeholder="Adresse mail">
+                    <input type="text" name="username" v-bind:class="{error:usernameError}" v-model="username" class="connect__input" placeholder="Username">
                     <input type="password" name="password" v-model="password" class="connect__input" placeholder="Mot de passe">
                     <input type="submit" value="Inscription" class="connect__btn">
                 </form>

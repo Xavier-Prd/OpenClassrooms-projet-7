@@ -1,14 +1,15 @@
 const app = Vue.createApp({
     data() {
         return {
-            userId: 1,
             messageToSend: '',
             image: '',
-            username: 'Xavier Pardoue',
-            userImageUrl: './images/user/default.png',
+            user: JSON.parse(localStorage.getItem("user")),
+            userImageUrl: JSON.parse(localStorage.getItem("user")).imageUrl,
             charNumber: 240,
             messages:[],
-            users:[]
+            users:[],
+            newUsername:"",
+            newImage:''
         }
     },
     
@@ -25,10 +26,6 @@ const app = Vue.createApp({
         },
         getUser(id) {
             return this.users.find(user => user.id === id);
-        },
-
-        redirect(id){
-            window.location.assign(`post.html?id=${id}`);
         },
         conversionDate(date){
             const posted = new Date(date);
@@ -81,8 +78,72 @@ const app = Vue.createApp({
         countChar(message){
             return 240 - message.length;
         },
-        replaceImage(image){
-            this.image = image
+        disconnect(){
+            localStorage.clear();
+            window.location.assign('index.html');
+        },
+        replaceImage(e){
+            this.image = e.currentTarget.files[0]
+        },
+        replaceUserImage(e){
+            this.newImage = e.currentTarget.files[0]
+        },
+        deleteUser(){
+            fetch('http://localhost:3000/api/auth/delete-user/'+this.user.userId, {
+                method : 'DELETE',
+                headers: {
+                    authorization:'bearer '+ this.user.token
+                  }
+            })
+            .then((res)=> {
+                if(res.ok){
+                    this.disconnect();
+                    return res.json();
+                }
+            })
+        },
+        sendUser(e){
+            e.preventDefault();
+            let valid = true;
+
+            document.querySelectorAll('.form__input, .form__file').forEach((input) => {
+                valid = input.reportValidity() && valid;
+            })
+            if (valid) {
+                let data = new FormData();
+                data.append('user', JSON.stringify({username:this.newUsername, userId: this.user.userId}));
+                data.append('image', this.newImage);
+
+                fetch('http://localhost:3000/api/auth/modify-user/'+this.user.userId, {
+                    method : 'POST',
+                    headers: {
+                        authorization:'bearer '+ this.user.token
+                      },
+                    body : data
+                })
+                .then((res)=> {
+                    if(res.ok){
+                        return res.json().then(data => {
+                            localStorage.setItem('user', JSON.stringify(data.user))
+                            window.location.reload();
+                        })
+                    }
+                });
+            }
+        },
+        deleteMsg(message){
+            fetch('http://localhost:3000/api/auth/delete-message/'+message.id, {
+                method : 'DELETE',
+                headers: {
+                    authorization:'bearer '+ this.user.token
+                  }
+            })
+            .then((res)=> {
+                if(res.ok){
+                    window.location.reload();
+                    return res.json();
+                }
+            })
         },
         sendData(e){
             e.preventDefault();
@@ -92,18 +153,16 @@ const app = Vue.createApp({
                 valid = input.reportValidity() && valid;
             })
             if (valid) {
-                const message = {
-                    userId:this.userId,
-                    message: this.messageToSend,
-                    // image: this.image
-                }
+                let data = new FormData();
+                data.append('message', JSON.stringify({message: this.messageToSend}));
+                data.append('image', this.image);
+                
                 fetch('http://localhost:3000/api/auth/add-message', {
                     method : 'POST',
                     headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
+                        authorization:'bearer '+ this.user.token
                       },
-                    body : JSON.stringify({message})
+                    body : data
                 })
                 .then((res)=> {
                     if(res.ok){
@@ -115,6 +174,9 @@ const app = Vue.createApp({
         }
     },
     created() {
+        if(!localStorage.getItem('user')) {
+            window.location.assign('index.html')
+        }
         fetch('http://localhost:3000/api/auth/messages')
         .then((res) => {
             if (res.ok) {

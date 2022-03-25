@@ -13,14 +13,14 @@
 <body>
     <section id="chat">
         <header class="user">
-            <section class="user__head header">
+            <a class="user__head header" href="#">
             <img src="./images/logo.png" alt="logo groupomania xavier pardoue" class="header__logo">
             <h2 class="header__slogan">Réseau social interne</h2>
-        </section>
+            </a>
         <section class="user__container">
             <article class="user__info">
                 <img :src="userImageUrl" alt="" class="user__img" alt="">
-                <p class="user__name">{{username}}</p>
+                <p class="user__name">{{user.username}}</p>
             </article>
             <form @submit="sendData" enctype="multipart/form-data" class="user__form form">
                 <section class="user__textarea">
@@ -33,21 +33,32 @@
                     <input type="submit" value="" class="form__submit">
                 </section>
             </form>
+            <form @submit="sendUser" enctype="multipart/form-data" class="form__user">
+                <label for="userImage"><img :src="user.imageUrl" alt="" class="form__upload"></label>
+                <input type="file" id="userImage" @change="replaceUserImage" class="form__file">
+                <input type="text" v-model="newUsername" placeholder="Modifiez votre nom d'utilisateur" class="form__input">
+                <input type="submit" value="Sauvegarder" class="form__submit">
+            </form>
+            <input type="button" @click='disconnect' value="Se déconnecter" class="form__submit disconnect">
+            <input type="button" @click='deleteUser' value="Supprimer mon compte" class="delete">
             </section>
         </header>
         <main class="main">
             <section class="main__posts">
-                <article  v-for="message in messages" @click="redirect(message.id)" class="main__post post">
+                <article  v-for="message in messages" class="main__post post">
                     <section class="post__head">
                         <img :src="getUser(message.userId).imageUrl" alt="" class="post__img">
                         <p class="post__time">{{conversionDate(message.createdAt)}}</p>
                     </section>
                     <section class="post__msg">
                         <p class="post__author">{{getUser(message.userId).username}}</p>
-                        <p class="post__content">{{message.message}}</p>
+                        <p class="post__content">{{ message.message }}</p>
                         <img v-if="message.imageUrl" :src="message.imageUrl" alt="">
                     </section>
-                    <a :href="'post.html?id='+message.id" class="post__reply"><img src="./images/reply.svg" alt="">
+                    <a href="#" @click="deleteMsg(message)" v-if="message.userId==this.user.userId||this.user.role=='admin'" class="post__delete"><img src="./images/trash.svg" class="post__trash"></a>
+                    <a v-if="message.userId==this.user.userId" :href="'edit.html?id='+message.id" class="post__edit"><img src='./images/edit.svg' class="post__edits"></a>
+                    <a :href="'post.html?id='+message.id" class="post__reply">
+                        <img src="./images/reply.svg" alt=""> 
                         <p>{{message.reply_number}}</p>
                     </a>
                 </article>

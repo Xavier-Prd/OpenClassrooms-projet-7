@@ -6,6 +6,7 @@ const app = Vue.createApp({
         return {
                 email : '',
                 password : '',
+                error: ''
         }
     },
     methods: {
@@ -31,10 +32,20 @@ const app = Vue.createApp({
                 })
                 .then((res)=> {
                     if(res.ok){
-                        window.location.assign('chat.html');
-                        return res.json();
+                        return res.json()
+                        .then(data => {
+                            localStorage.setItem('user', JSON.stringify(data))
+                            window.location.assign('chat.html');
+                        })
                     }
-                });
+                    else {
+                        res.json()
+                        .then(error => {
+                            this.error = error;
+                        })
+                    }
+                })
+                
             }
         }
     },

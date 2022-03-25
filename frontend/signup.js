@@ -34,7 +34,22 @@ const app = Vue.createApp({
                             window.location.assign('index.html');
                             return res.json();
                         }
-                        
+                        else {
+                            res.json()
+                            .then(error => {
+                                this.error = error;
+                                this.mailError = false
+                                this.usernameError = false
+                                switch(error.type){
+                                    case "email":
+                                        this.mailError = true;
+                                        break;
+                                        case "username":
+                                        this.usernameError = true;
+                                        break;
+                                }
+                                })
+                        }
                     })
                 }
             }

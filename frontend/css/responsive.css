@@ -40,3 +40,65 @@ font-size: 26px;
 .connect__img {
     display: none;
 }
+
+#chat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    position: static;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.form__submit {
+    display: none;
+}
+
+.delete {
+    display: none;
+}
+
+.user__container {
+    padding-left: 0;
+}
+
+.user__head .header__logo {
+    width: 100%;
+    height: 100%;
+}
+
+.user__img {
+    width: 40px;
+    height: 40px;
+}
+
+.form__user .form__submit{
+    display: none;
+}
+
+.form__user .form__input{
+    display: none;
+}
+
+.form__user .form__upload{
+    display: none;
+}
+
+.post__img {
+    width: 40px;
+    height: 40px;
+}
+
+.post {
+    flex-direction: column;
+    gap: 0;
+}

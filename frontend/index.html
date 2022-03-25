@@ -20,6 +20,7 @@
         <section class="main__connect connect">
             <article class="connect__left">
                 <h2 class="connect__title">Connectez-vous</h2>
+                <p v-if="error" class="connect__error">{{error.message}}</p>
                 <form @submit="sendData"  class="connect__form">
                     <input type="email" name="email" v-model="email" class="connect__input" placeholder="Adresse mail">
                     <input type="password" name="password" v-model="password" class="connect__input" placeholder="Mot de passe">
