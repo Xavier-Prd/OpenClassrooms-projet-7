@@ -6,26 +6,11 @@ const app = Vue.createApp({
             user: JSON.parse(localStorage.getItem("user")),
             userImageUrl: JSON.parse(localStorage.getItem("user")).imageUrl,
             charNumber: 240,
-            message:'',
-            comments:[],
-            users:[]
+            message:''
         }
     },
     
     methods: {
-        getUsers(id) {
-            fetch('http://localhost:3000/api/auth/user/' + id)
-            .then((res) => {
-                if (res.ok) {
-                  return res.json();
-                }
-              }).then(user => {
-                this.users.push(user);
-            })
-        },
-        getUser(id) {
-            return this.users.find(user => user.id === id);
-        },
         conversionDate(date){
             const day1 = new Date(date);
             const day2 = new Date(Date.now());
@@ -109,27 +94,14 @@ const app = Vue.createApp({
         }
     },
     created() {
-        fetch('http://localhost:3000/api/auth/comment/'+ (new URL(window.location.href)).searchParams.get('id'))
-        .then((res) => {
-            if (res.ok) {
-              return res.json();
-            }
-          }).then(comments => {
-            comments.forEach(comment => {
-                  this.getUsers(comment.userId);
-                  
-              });
-            this.comments = comments;
-        });
         fetch('http://localhost:3000/api/auth/message/'+ (new URL(window.location.href)).searchParams.get('id'))
         .then((res) => {
             if (res.ok) {
               return res.json();
             }
           }).then(message => {
-            this.getUsers(message.userId);
             this.message = message;
-            this.image = message.image;
+            this.image = message.imageUrl;
             this.messageToSend = message.message;
         });
 

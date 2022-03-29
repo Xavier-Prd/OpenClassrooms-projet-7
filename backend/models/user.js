@@ -25,7 +25,8 @@ const User = bdd.define('User', {
         type: DataTypes.ENUM(['admin', 'user'])
     },
     imageUrl : {
-        type : DataTypes.STRING
+        type : DataTypes.STRING,
+        defaultValue: "./images/user/default.png" 
     }
 });
 

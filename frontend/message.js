@@ -7,25 +7,10 @@ const app = Vue.createApp({
             userImageUrl: JSON.parse(localStorage.getItem("user")).imageUrl,
             charNumber: 240,
             message:'',
-            comments:[],
-            users:[]
         }
     },
     
     methods: {
-        getUsers(id) {
-            fetch('http://localhost:3000/api/auth/user/' + id)
-            .then((res) => {
-                if (res.ok) {
-                  return res.json();
-                }
-              }).then(user => {
-                this.users.push(user);
-            })
-        },
-        getUser(id) {
-            return this.users.find(user => user.id === id);
-        },
         conversionDate(date){
             const day1 = new Date(date);
             const day2 = new Date(Date.now());
@@ -81,7 +66,7 @@ const app = Vue.createApp({
             this.image = e.currentTarget.files[0];
         },
         disconnect(e){
-            localStorage.setItem('user', '');
+            localStorage.clear();
             window.location.assign('index.html');
         },
         deleteComment(comment) {
@@ -93,6 +78,7 @@ const app = Vue.createApp({
             })
             .then((res)=> {
                 if(res.ok){
+                    window.location.reload();
                     return res.json();
                 }
             })
@@ -106,6 +92,7 @@ const app = Vue.createApp({
             })
             .then((res)=> {
                 if(res.ok){
+                    window.location.assign('chat.html');
                     return res.json();
                 }
             })
@@ -139,26 +126,15 @@ const app = Vue.createApp({
         }
     },
     created() {
-        fetch('http://localhost:3000/api/auth/comment/'+ (new URL(window.location.href)).searchParams.get('id'))
-        .then((res) => {
-            if (res.ok) {
-              return res.json();
-            }
-          }).then(comments => {
-            comments.forEach(comment => {
-                  this.getUsers(comment.userId);
-                  
-              });
-            this.comments = comments;
-        });
+        if(!localStorage.getItem('user')) {
+            window.location.assign('index.html')
+        }
         fetch('http://localhost:3000/api/auth/message/'+ (new URL(window.location.href)).searchParams.get('id'))
         .then((res) => {
             if (res.ok) {
               return res.json();
             }
           }).then(message => {
-            this.getUsers(message.userId);
-                  
             this.message = message;
         });
 

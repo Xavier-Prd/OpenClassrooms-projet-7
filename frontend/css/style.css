@@ -297,6 +297,7 @@ color: var(--reduced-color);
 
 .post__content {
     margin: 0;
+    overflow-wrap: break-word;
 
 }
 .post__author {
@@ -387,4 +388,8 @@ color: var(--reduced-color);
 }
 .form__user input[type=text]{
     height: fit-content;
+}
+
+.mobile {
+    display: none;
 }

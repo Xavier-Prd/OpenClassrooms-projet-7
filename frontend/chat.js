@@ -7,26 +7,12 @@ const app = Vue.createApp({
             userImageUrl: JSON.parse(localStorage.getItem("user")).imageUrl,
             charNumber: 240,
             messages:[],
-            users:[],
             newUsername:"",
             newImage:''
         }
     },
     
     methods: {
-        getUsers(id) {
-            fetch('http://localhost:3000/api/auth/user/' + id)
-            .then((res) => {
-                if (res.ok) {
-                  return res.json();
-                }
-              }).then(user => {
-                this.users.push(user);
-            })
-        },
-        getUser(id) {
-            return this.users.find(user => user.id === id);
-        },
         conversionDate(date){
             const posted = new Date(date);
             const today = new Date(Date.now());
@@ -123,8 +109,15 @@ const app = Vue.createApp({
                 })
                 .then((res)=> {
                     if(res.ok){
-                        return res.json().then(data => {
-                            localStorage.setItem('user', JSON.stringify(data.user))
+                        res.json().then(data => {
+                            let user = JSON.parse(localStorage.getItem('user'))
+                            if(data.user.username) {
+                                user.username = data.user.username
+                            }
+                            if(data.user.imageUrl){
+                                user.imageUrl =data.user.imageUrl
+                            }
+                            localStorage.setItem('user', JSON.stringify(user))
                             window.location.reload();
                         })
                     }
@@ -182,19 +175,7 @@ const app = Vue.createApp({
             if (res.ok) {
               return res.json();
             }
-          }).then(messages => {
-              messages.forEach(message => {
-                  this.getUsers(message.userId);
-                  fetch('http://localhost:3000/api/auth/comment/'+ message.id)
-                    .then((res) => {
-                        if (res.ok) {
-                        return res.json();
-                        }
-                    }).then(comments => {
-                        message.reply_number = comments.length;
-                    });
-              });
-              
+          }).then(messages => {              
             this.messages = messages;
         });
 

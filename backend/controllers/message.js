@@ -1,8 +1,24 @@
 const Message = require('../models/message');
+const User = require('../models/user');
+const Comment = require('../models/comment');
 
 // Methode get - Envoyer tous les messages
 exports.get = (req, res, next) =>{
-    Message.findAll({order:  [['createdAt', 'DESC']]})
+    Message.findAll({
+        include: [{
+            model: User, 
+            attributes: ['username', 'imageUrl']
+            }, 
+            {
+                model: Comment, 
+                include: {
+                    model: User, 
+                    attributes: ['username', 'imageUrl']
+                }
+            }
+        ],
+        order:  [['createdAt', 'DESC']]
+    })
     .then(messages => {
         res.status(200).json(messages)
     })
@@ -11,7 +27,25 @@ exports.get = (req, res, next) =>{
 
 // Methode getOne - Envoyer un message
 exports.getOne = (req, res, next) => {
-    Message.findByPk(req.params.id)
+    Message.findOne({
+                    where: {
+                        id: req.params.id
+                    }, 
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['username', 'imageUrl']
+                        }, 
+                        {
+                            model : Comment,
+                            include: {
+                                model: User,
+                                attributes: ['username', 'imageUrl']
+                            },
+                            order: [['createdAt', 'DESC']]
+                        }
+                    ]
+                })
     .then( message => res.status(200).json(message))
     .catch(error => res.status(404).json({ error }));
 }
@@ -35,16 +69,17 @@ exports.add = (req, res, next) =>{
 exports.delete = (req, res, next) => {
     Message.findByPk(req.params.id)
     .then( message => {
-        console.log(req.auth);
         if(!message){
-            res.status(404).json({error: new Error('Aucun message trouvé !')});
+            res.status(404).json({error: 'Aucun message trouvé !'});
         }
-        // if (message.userId !== req.auth.userId){
-        //     res.status(400).json({error: new Error('Utilisateur non autorisé !')});
-        // }
-        Message.destroy({where: {id: req.params.id}})
-        .then(()=> res.status(200).json({message:'Message supprimé !'})) 
-        .catch(error => res.status(400).json({ error }));
+        if (message.userId !== req.token.userId && req.token.role !== 'admin'){
+            res.status(400).json({error:'Utilisateur non autorisé !'});
+        }
+        else{
+            Message.destroy({where: {id: req.params.id}})
+            .then(()=> res.status(200).json({message:'Message supprimé !'})) 
+            .catch(error => res.status(400).json({ error }));
+        }
     })
 };
 
@@ -55,7 +90,12 @@ exports.edit =  (req, res, next) => {
         messageObject.imageUrl = imageUrl;
     }
     messageObject.userId = req.token.userId;
+    if (messageObject.userId !== req.token.userId) {
+        res.status(400).json({error:'Utilisateur non autorisé !'});
+    }
+    else {
     Message.update(messageObject, {where: {id: req.params.id}})
     .then(() => res.status(201).json({message: 'Le message a été modifié !'}))
     .catch(error => res.status(400).json({error}));
+    }
   };

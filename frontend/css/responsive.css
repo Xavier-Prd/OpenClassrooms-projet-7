@@ -46,6 +46,7 @@ font-size: 26px;
     flex-direction: column;
     align-items: center;
     padding: 0;
+    margin-top: 20px;
 }
 
 .user {
@@ -57,39 +58,25 @@ font-size: 26px;
 .main {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 100vw;
 }
 
-.form__submit {
-    display: none;
-}
-
-.delete {
+.user__submit, .disconnect, .delete{
     display: none;
 }
 
 .user__container {
     padding-left: 0;
+    height: auto;
+    width: auto;
 }
-
-.user__head .header__logo {
-    width: 100%;
-    height: 100%;
-}
-
 .user__img {
     width: 40px;
     height: 40px;
 }
 
-.form__user .form__submit{
-    display: none;
-}
-
-.form__user .form__input{
-    display: none;
-}
-
-.form__user .form__upload{
+.form__user {
     display: none;
 }
 
@@ -100,5 +87,44 @@ font-size: 26px;
 
 .post {
     flex-direction: column;
-    gap: 0;
+    gap: 10px;
+    padding: 5px;
+    max-width: 100%;
+    height: max-content;
+}
+
+.main__posts {
+    padding: 10px;
+    max-width: 90%;
+}
+
+.post__head {
+    width: auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.post__reply {
+    top: 0;
+}
+
+.user {
+    width: 90%;
+    max-width: 90%;
+}
+
+.mobile .disconnect, .mobile .user__submit, .mobile .delete, .mobile .form__user, .mobile {
+    display:block;
+}
+
+.mobile .form__user {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mobile .disconnect {
+    width: 100%;
 }
