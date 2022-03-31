@@ -55,11 +55,11 @@
                 </article>
                 <article v-for="comment in message.Comments" class="main__post main__post--comment post">
                     <section class="post__head">
-                        <img :src="message.User.imageUrl" alt="" class="post__img">
+                        <img :src="comment.User.imageUrl" alt="" class="post__img">
                         <p class="post__time">{{conversionDate(comment.createdAt)}}</p>
                     </section>
                     <section class="post__msg">
-                        <p class="post__author">{{message.User.username}}</p>
+                        <p class="post__author">{{comment.User.username}}</p>
                         <p class="post__content">{{comment.comment}}</p>
                         <img v-if="comment.imageUrl" :src="comment.imageUrl" alt="">
                     </section>
