@@ -26,4 +26,8 @@ app.use((req, res, next) => {
   app.use('/api/auth', messageRoutes);
   app.use('/api/auth', commentRoutes);
   app.use('/images', express.static(path.join(__dirname, 'images')));
+
+  app.use((error, req, res, next) => {
+    res.status(400).json({ error: error.message });
+  });
 module.exports = app;

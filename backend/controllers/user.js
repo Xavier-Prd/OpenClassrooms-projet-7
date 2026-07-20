@@ -61,7 +61,7 @@ exports.login = (req, res, next) => {
         };
 
     exports.get = (req, res, next) => {
-        User.findOne({where: {id: req.params.id}/*, attributes: ['username', 'imageUrl']*/})
+        User.findOne({where: {id: req.params.id}, attributes: {exclude: ['password']}})
         .then( user => res.status(200).json(user))
         .catch(error => res.status(404).json({ error }));
     };

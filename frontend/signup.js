@@ -21,7 +21,7 @@ const app = Vue.createApp({
                         username: this.username,
                         password: this.password
                     }
-                    fetch('http://localhost:3000/api/auth/signup', {
+                    fetch(`${API_URL}/signup`, {
                         method : 'POST',
                         headers: {
                             'Accept': 'application/json',

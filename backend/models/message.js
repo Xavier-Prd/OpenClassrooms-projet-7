@@ -7,10 +7,6 @@ const Message = bdd.define('Message', {
         autoIncrement: true,
         primaryKey: true
     },
-    // userId : {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false
-    // },
     message : {
         type: DataTypes.STRING,
         allowNull: false,

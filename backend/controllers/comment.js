@@ -1,18 +1,5 @@
 const Comment = require('../models/comment');
 
-// Methode get - Envoyer tous les commentaires
-// exports.get = (req, res, next) =>{
-//     Comment.findAll({
-//         where : {
-//             messageId : req.params.id
-//         }
-//     })
-//     .then(comments => {
-//         res.status(200).json(comments)
-//     })
-//     .catch(error => res.status(400).json({ error }));
-// };
-
 // Methode add - Publier un commentaire
 exports.add = (req, res, next) =>{
     let imageUrl = '';

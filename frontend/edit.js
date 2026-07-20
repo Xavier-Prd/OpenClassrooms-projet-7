@@ -77,7 +77,7 @@ const app = Vue.createApp({
                 data.append('message', JSON.stringify({message: this.messageToSend, messageId: this.message.id}));
                 data.append('image', this.image);
 
-                fetch('http://localhost:3000/api/auth/modify-message/'+this.message.id, {
+                fetch(`${API_URL}/modify-message/`+this.message.id, {
                     method : 'POST',
                     headers: {
                         authorization:'bearer '+ this.user.token
@@ -94,7 +94,7 @@ const app = Vue.createApp({
         }
     },
     created() {
-        fetch('http://localhost:3000/api/auth/message/'+ (new URL(window.location.href)).searchParams.get('id'))
+        fetch(`${API_URL}/message/`+ (new URL(window.location.href)).searchParams.get('id'))
         .then((res) => {
             if (res.ok) {
               return res.json();

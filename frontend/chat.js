@@ -75,7 +75,7 @@ const app = Vue.createApp({
             this.newImage = e.currentTarget.files[0]
         },
         deleteUser(){
-            fetch('http://localhost:3000/api/auth/delete-user/'+this.user.userId, {
+            fetch(`${API_URL}/delete-user/`+this.user.userId, {
                 method : 'DELETE',
                 headers: {
                     authorization:'bearer '+ this.user.token
@@ -100,7 +100,7 @@ const app = Vue.createApp({
                 data.append('user', JSON.stringify({username:this.newUsername, userId: this.user.userId}));
                 data.append('image', this.newImage);
 
-                fetch('http://localhost:3000/api/auth/modify-user/'+this.user.userId, {
+                fetch(`${API_URL}/modify-user/`+this.user.userId, {
                     method : 'POST',
                     headers: {
                         authorization:'bearer '+ this.user.token
@@ -125,7 +125,7 @@ const app = Vue.createApp({
             }
         },
         deleteMsg(message){
-            fetch('http://localhost:3000/api/auth/delete-message/'+message.id, {
+            fetch(`${API_URL}/delete-message/`+message.id, {
                 method : 'DELETE',
                 headers: {
                     authorization:'bearer '+ this.user.token
@@ -150,7 +150,7 @@ const app = Vue.createApp({
                 data.append('message', JSON.stringify({message: this.messageToSend}));
                 data.append('image', this.image);
                 
-                fetch('http://localhost:3000/api/auth/add-message', {
+                fetch(`${API_URL}/add-message`, {
                     method : 'POST',
                     headers: {
                         authorization:'bearer '+ this.user.token
@@ -170,7 +170,7 @@ const app = Vue.createApp({
         if(!localStorage.getItem('user')) {
             window.location.assign('index.html')
         }
-        fetch('http://localhost:3000/api/auth/messages')
+        fetch(`${API_URL}/messages`)
         .then((res) => {
             if (res.ok) {
               return res.json();
