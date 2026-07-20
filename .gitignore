@@ -1,2 +1,8 @@
 node_modules
 .env
+
+# Runtime file uploads (multer destination) - not source, shouldn't be versioned
+backend/images/*
+!backend/images/user/
+backend/images/user/*
+!backend/images/user/default.png

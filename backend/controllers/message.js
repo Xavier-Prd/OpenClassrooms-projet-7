@@ -70,32 +70,35 @@ exports.delete = (req, res, next) => {
     Message.findByPk(req.params.id)
     .then( message => {
         if(!message){
-            res.status(404).json({error: 'Aucun message trouvé !'});
+            return res.status(404).json({error: 'Aucun message trouvé !'});
         }
         if (message.userId !== req.token.userId && req.token.role !== 'admin'){
-            res.status(400).json({error:'Utilisateur non autorisé !'});
+            return res.status(400).json({error:'Utilisateur non autorisé !'});
         }
-        else{
-            Message.destroy({where: {id: req.params.id}})
-            .then(()=> res.status(200).json({message:'Message supprimé !'})) 
-            .catch(error => res.status(400).json({ error }));
-        }
+        Message.destroy({where: {id: req.params.id}})
+        .then(()=> res.status(200).json({message:'Message supprimé !'}))
+        .catch(error => res.status(400).json({ error }));
     })
+    .catch(error => res.status(400).json({ error }));
 };
 
 exports.edit =  (req, res, next) => {
-    const messageObject = JSON.parse(req.body.message);
-    if(req.file){
-        let imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-        messageObject.imageUrl = imageUrl;
-    }
-    messageObject.userId = req.token.userId;
-    if (messageObject.userId !== req.token.userId) {
-        res.status(400).json({error:'Utilisateur non autorisé !'});
-    }
-    else {
-    Message.update(messageObject, {where: {id: req.params.id}})
-    .then(() => res.status(201).json({message: 'Le message a été modifié !'}))
+    Message.findByPk(req.params.id)
+    .then(message => {
+        if (!message) {
+            return res.status(404).json({error: 'Aucun message trouvé !'});
+        }
+        if (message.userId !== req.token.userId && req.token.role !== 'admin') {
+            return res.status(400).json({error: 'Utilisateur non autorisé !'});
+        }
+        const messageObject = JSON.parse(req.body.message);
+        delete messageObject.userId;
+        if (req.file) {
+            messageObject.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        }
+        Message.update(messageObject, {where: {id: req.params.id}})
+        .then(() => res.status(201).json({message: 'Le message a été modifié !'}))
+        .catch(error => res.status(400).json({error}));
+    })
     .catch(error => res.status(400).json({error}));
-    }
   };

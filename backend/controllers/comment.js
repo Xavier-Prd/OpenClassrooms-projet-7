@@ -32,16 +32,14 @@ exports.delete = (req, res, next) => {
     Comment.findByPk(req.params.id)
     .then( comment => {
         if(!comment){
-            res.status(404).json({error:'Aucun commentaire trouvé !'});
+            return res.status(404).json({error:'Aucun commentaire trouvé !'});
         }
-        console.log(req.token);
         if(comment.userId !== req.token.userId && req.token.role !== 'admin'){
-            res.status(400).json({error:'Utilisateur non autorisé !'});
+            return res.status(400).json({error:'Utilisateur non autorisé !'});
         }
-        else {
-            Comment.destroy({where: {id: req.params.id}})
-            .then(()=> res.status(200).json({comment:'Commentaire supprimé !'})) 
-            .catch(error => res.status(400).json({ error }));
-        }
+        Comment.destroy({where: {id: req.params.id}})
+        .then(()=> res.status(200).json({comment:'Commentaire supprimé !'}))
+        .catch(error => res.status(400).json({ error }));
     })
+    .catch(error => res.status(400).json({ error }));
 };

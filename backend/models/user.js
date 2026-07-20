@@ -26,7 +26,7 @@ const User = bdd.define('User', {
     },
     imageUrl : {
         type : DataTypes.STRING,
-        defaultValue: "./images/user/default.png" 
+        defaultValue: "http://localhost:3000/images/user/default.png"
     }
 });
 

@@ -70,21 +70,25 @@ exports.login = (req, res, next) => {
         User.findByPk(req.params.id)
         .then( user => {
             if(!user){
-                res.status(404).json({error: new Error('Aucun utilisateur trouvé !')});
+                return res.status(404).json({error: 'Aucun utilisateur trouvé !'});
             }
             if (user.id !== req.token.userId && req.token.role !== 'admin'){
-                res.status(400).json({error: new Error('Utilisateur non autorisé !')});
+                return res.status(400).json({error: 'Utilisateur non autorisé !'});
             }
-            else{
             User.destroy({where: {id: req.params.id}})
             .then(()=> res.status(200).json({message:'Utilisateur supprimé !'}))
             .catch(error => res.status(400).json({ error }));
-            }
         })
+        .catch(error => res.status(400).json({ error }));
     };
 
     exports.edit =  (req, res, next) => {
+        if (Number(req.params.id) !== req.token.userId && req.token.role !== 'admin') {
+            return res.status(400).json({error:'Utilisateur non autorisé !'});
+        }
         const userObject = JSON.parse(req.body.user);
+        delete userObject.userId;
+        delete userObject.role;
         if(req.file){
             let imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
             userObject.imageUrl = imageUrl;
@@ -92,15 +96,9 @@ exports.login = (req, res, next) => {
         if(userObject.username == ''){
             delete userObject.username;
         }
-        userObject.userId = req.token.userId;
-        if (userObject.userId !== req.token.userId) {
-            res.status(400).json({error:'Utilisateur non autorisé !'});
-        }
-        else {
-        User.update(userObject, {where: {id: userObject.userId}})
+        User.update(userObject, {where: {id: req.params.id}})
         .then(() => {
             res.status(201).json({user: userObject, message: "L'utilisateur a été modifié !"})
         })
         .catch(error => res.status(400).json({error}));
-    }
       };
