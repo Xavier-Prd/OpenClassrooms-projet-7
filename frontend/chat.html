@@ -11,11 +11,12 @@
 </head>
 <body>
     <section id="chat">
-        <header class="user">
-            <a class="user__head header" href="#">
+        <a class="user__head header" href="#">
             <img src="./images/logo.png" alt="logo groupomania xavier pardoue" class="header__logo">
             <h2 class="header__slogan">Réseau social interne</h2>
-            </a>
+        </a>
+        <div class="chat__body">
+        <header class="user">
         <section class="user__container">
             <article class="user__info">
                 <img :src="userImageUrl" alt="" class="user__img" alt="">
@@ -29,7 +30,7 @@
                 <section class="form__bottom">
                     <label for="file"><img src="./images/upload.svg" alt="" class="form__upload"></label>
                     <input type="file" id="file" @change="replaceImage" class="form__file">
-                    <input type="submit" value="" class="form__submit">
+                    <input type="submit" value="Publier" class="form__submit">
                 </section>
             </form>
             <form @submit="sendUser" enctype="multipart/form-data" class="form__user">
@@ -57,7 +58,7 @@
                     <a href="#" @click="deleteMsg(message)" v-if="message.userId==this.user.userId||this.user.role=='admin'" class="post__delete"><img src="./images/trash.svg" class="post__trash"></a>
                     <a v-if="message.userId==this.user.userId" :href="'edit.html?id='+message.id" class="post__edit"><img src='./images/edit.svg' class="post__edits"></a>
                     <a :href="'post.html?id='+message.id" class="post__reply">
-                        <img src="./images/reply.svg" alt=""> 
+                        <img src="./images/reply.svg" alt="">
                         <p>{{message.Comments.length}}</p>
                     </a>
                 </article>
@@ -74,6 +75,7 @@
             <input type="button" @click='deleteUser' value="Supprimer mon compte" class="delete">
         </section>
     </main>
+    </div>
 </section>
     <script src="https://unpkg.com/vue@3.4.21"></script>
     <script src="config.js"></script>
